@@ -44,8 +44,8 @@
         </div>
         <div class="col-md-3 col-sm-12 col-xs-12">
         <div class="form-group">
-            <label for="cedula" class="text-primary" ng-keydown="calcularEdad()">Cédula : </label>
-            <input type="text" ng-model="cedula" id="cedula" class="form-control">
+            <label for="cedula" class="text-primary" >Cédula : </label>
+            <input type="text" ng-model="cedula" id="cedula" class="form-control" ng-keypress="operacionCedula()">
             </div>
         </div>
         <div class="col-md-2 col-sm-12 col-xs-12">
@@ -99,18 +99,16 @@
         </div>
         </div>
         </div>
-        <div class="row">
+               
+    </div>    
+</form>
+      <div class="container">      
+    <div class="row">
         <div class="col-md-6">
-       <!-- <button class="btn btn-success" ng-click="guardarCliente()" > Guardar</button>-->
-       <button class="btn btn-primary" ng-click="obtenerCodigoMunicipioCedula()">ObtenerCedula</a>
-
+        <button class="btn btn-success" ng-click="guardarCliente()" > Guardar</button>
         <button class="btn btn-danger" ng-click="ocultarFormulario()">Cancelar</a>
         </div>
-        </div>
-        
-    </div>
-    
-</form>
+        </div></div>
 <!-- Fin del Formulario-->
 </div>
 <br><br>
