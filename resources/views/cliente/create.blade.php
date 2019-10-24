@@ -44,7 +44,7 @@
         </div>
         <div class="col-md-3 col-sm-12 col-xs-12">
         <div class="form-group">
-            <label for="cedula" class="text-primary">Cédula : </label>
+            <label for="cedula" class="text-primary" ng-keydown="calcularEdad()">Cédula : </label>
             <input type="text" ng-model="cedula" id="cedula" class="form-control">
             </div>
         </div>
@@ -102,7 +102,7 @@
         <div class="row">
         <div class="col-md-6">
        <!-- <button class="btn btn-success" ng-click="guardarCliente()" > Guardar</button>-->
-       <button class="btn btn-primary" ng-click="recorrerCedula()">ObtenerCedula</a>
+       <button class="btn btn-primary" ng-click="obtenerCodigoMunicipioCedula()">ObtenerCedula</a>
 
         <button class="btn btn-danger" ng-click="ocultarFormulario()">Cancelar</a>
         </div>

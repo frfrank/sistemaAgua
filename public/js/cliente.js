@@ -31,7 +31,19 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     var digitosCedula;
     var elementos;
     var arregloObtenido;
+    var arregloCodigo;
+    var codigoMunicipio;
     var convertir;
+    var dia;
+    var mes;
+    var anio;    
+    var fecha = new Date();
+    var anioActual = fecha.getFullYear();
+    var sigloxx=parseInt(anioActual)-2000;
+    var anioNacimiento;
+    var mesActual = fecha.getMonth() + 1;
+    var diaActual = fecha.getDate();
+    var edad;
     
 
 
@@ -322,12 +334,49 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 arregloObtenido[5] 
                 );
          }
-
+         
+     }
+     $scope.convertirCedulaDeNumeroAFecha=()=>{
+         $scope.converirCedulaANumero();
+        dia=parseInt(arregloObtenido[0] + arregloObtenido[1]);
+        mes=parseInt(arregloObtenido[2] + arregloObtenido[3]);
+        anio=parseInt(arregloObtenido[4] + arregloObtenido[5]);
+        
+     }
+     $scope.comprobarSiNacioAntesDelDosMil=()=>{
+        $scope.convertirCedulaDeNumeroAFecha();
+        if(anio>sigloxx){
+            anioNacimiento=1900+anio;
+            console.log("Naciste en el siglo XX en el año " + anioNacimiento);
+        }
+        else{
+            anioNacimiento=2000+anio;
+            console.log("Nacistes despues del XX en el año " + anioNacimiento);
+        }
+     }
+     $scope.calcularEdad=()=>{ //ME COMPRUEBE EL MES EL DIA PARA CALCULAR LA EDAD
+         $scope.comprobarSiNacioAntesDelDosMil();
+         if(mes<mesActual || mes==mesActual && dia<diaActual){            
+         edad=anioActual-anioNacimiento;
+         $scope.edad=edad;
+         console.log("tiens " + edad + " años");
+         }
+         else{
+         edad=anioActual-anioNacimiento-1;
+         $scope.edad=edad;
+         console.log("tiens " + edad + " años");
+         }
+     }
+     $scope.obtenerCodigoMunicipioCedula=()=>{
+        $scope.obtenerCedula();
+         arregloCodigo=elementos.slice(0,3);
+         for(var i=0; i<arregloCodigo.length; i++){
+            codigoMunicipio=parseInt(arregloCodigo[0]+ arregloCodigo[1] + arregloCodigo[2]);
+         }
+       console.log(codigoMunicipio);
+    }
+    $scope.obtenerCodigoMunicipioCedula();
+     $scope.mostrarLugarDeNacimiento=()=>{
 
      }
-     $scope.obtenerDigitosCedula();
-    
-
 }]);
-
-
