@@ -189,6 +189,39 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
         })
     }
+    
+    $scope.eliminarCliente=(data=[])=>{
+        Swal.fire({
+            title: 'Estas Seguro?',
+            text: "Quieres eliminar el Registro!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Eliminar!'
+          }).then((result) => {
+            if (result.value) {
+                $scope.id=data['id'];
+                $http.post('/cliente/eliminarCliente', 
+            {
+                id: $scope.id  
+            }).then(function mySuccess(response) {
+              // console.log(data['id']);
+               $scope.listarclientes(1,$scope.buscar);
+                          
+
+            }, function myError(response) {
+                console.log("error", response);
+            })
+              Swal.fire(
+                'Eliminado!',
+                'Eliminado Exitosamente.',
+                'success'
+              )
+            }
+          });
+        
+    }
     $scope.desactivarComunidad=(data=[])=>{
         Swal.fire({
             title: 'Estas Seguro?',
@@ -589,8 +622,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
          $scope.obtenerCedula();
         let error;             
         if(dia>=31|| mes>12 || digitosCedula.length<16){
-         error=  alertify.error('Revisa Cedula mal Escrita');
-                 
+         error=  alertify.error('Cedula esta Vacia o Esta mal escrita');                 
      } 
          return error;
      }

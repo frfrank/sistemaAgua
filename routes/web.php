@@ -50,6 +50,8 @@ Route::get('/cliente/listaVerificarCedula','ClienteController@listaVerificarCedu
 Route::put('/cliente/desactivar','ClienteController@desactivar');
 Route::put('/cliente/activar','ClienteController@activar');
 Route::get('/cliente/listarComunidad','ClienteController@listarComunidad');
+Route::post('/cliente/eliminarCliente','ClienteController@destroy');
+
 
 
 
