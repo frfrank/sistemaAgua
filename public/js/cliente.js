@@ -10,6 +10,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     $scope.descripcion = '';
     $scope.direccion='';
     $scope.comunidad='';
+    $scope.lugarNacimiento='';
     $scope.estado='1';
     $scope.mostrar='0';
     $scope.error = '';
@@ -45,9 +46,6 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     var diaActual = fecha.getDate();
     var edad;
     
-
-
-
 //function para listar todos los registros
     $scope.listarclientes = (page,buscar) => {
         $http.get('/cliente/listaClientes?page=' + page +'&buscar='+ buscar) //Esta ruta ya la tengo definida
@@ -100,7 +98,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         
         $scope.guardarCliente = () => {
             $scope.verificarCedula('guardar');
-            $http.post('/cliente/guardarClientes', {
+            if($scope.validarCedula()){
+                return;
+            }
+                $http.post('/cliente/guardarClientes', {
                 nombre: $scope.nombre,
                 apellido:$scope.apellido,
                 telefono:$scope.telefono,
@@ -130,8 +131,8 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
                 }
             )
-        }
         
+    }
         //Verficar Cedula
        $scope.verificarCedula=(opcion)=>{
         $http.get('/cliente/listaVerificarCedula') //Esta ruta ya la tengo definida
@@ -309,7 +310,9 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     }
 
     $scope.operacionCedula=()=>{
-
+        $scope.calcularEdad();
+        $scope.mostrarLugarDeNacimiento();
+       
     }
      $scope.obtenerCedula=()=>{
          $scope.cedula;
@@ -347,36 +350,249 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         $scope.convertirCedulaDeNumeroAFecha();
         if(anio>sigloxx){
             anioNacimiento=1900+anio;
-            console.log("Naciste en el siglo XX en el año " + anioNacimiento);
+            
         }
         else{
             anioNacimiento=2000+anio;
-            console.log("Nacistes despues del XX en el año " + anioNacimiento);
+            
         }
      }
      $scope.calcularEdad=()=>{ //ME COMPRUEBE EL MES EL DIA PARA CALCULAR LA EDAD
          $scope.comprobarSiNacioAntesDelDosMil();
-         if(mes<mesActual || mes==mesActual && dia<diaActual){            
-         edad=anioActual-anioNacimiento;
-         $scope.edad=edad;
-         console.log("tiens " + edad + " años");
+         if(mes<mesActual || mes==mesActual && dia<diaActual){  
+             if(mes<=12 && dia<=31){                
+                 edad=anioActual-anioNacimiento;
+                 $scope.edad=edad;
+             }
+             else{
+                 $scope.edad='';
+             }   
          }
          else{
-         edad=anioActual-anioNacimiento-1;
-         $scope.edad=edad;
-         console.log("tiens " + edad + " años");
+            if(mes<=12 && dia<=31){ 
+                edad=anioActual-anioNacimiento-1;
+                $scope.edad=edad;
+            }
+            else{
+                $scope.edad='';
+            }
          }
      }
      $scope.obtenerCodigoMunicipioCedula=()=>{
-        $scope.obtenerCedula();
          arregloCodigo=elementos.slice(0,3);
          for(var i=0; i<arregloCodigo.length; i++){
             codigoMunicipio=parseInt(arregloCodigo[0]+ arregloCodigo[1] + arregloCodigo[2]);
          }
-       console.log(codigoMunicipio);
     }
-    $scope.obtenerCodigoMunicipioCedula();
-     $scope.mostrarLugarDeNacimiento=()=>{
 
+     $scope.mostrarLugarDeNacimiento=()=>{
+            $scope.obtenerCodigoMunicipioCedula();
+            switch(codigoMunicipio){
+                 case 361:
+                     $scope.lugarNacimiento='Boaco';                 
+                 break;
+                case 362:
+                    $scope.lugarNacimiento=	'Camoapa';
+                break;
+                case 363:
+                     $scope.lugarNacimiento='Santa Lucía';                 
+                 break;
+                case 364:
+                    $scope.lugarNacimiento=	'San José Del Remate';
+                break;
+                case 365:
+                     $scope.lugarNacimiento='San Lorenzo';                 
+                 break;
+                case 366:
+                    $scope.lugarNacimiento=	'Teustepe';
+                break; 
+                case 41:
+                     $scope.lugarNacimiento='Jinotepe';                 
+                 break;               
+                case 42:
+                     $scope.lugarNacimiento='Diriamba';                 
+                 break;
+                case 43:
+                    $scope.lugarNacimiento=	'San Marcos';
+                break;
+                case 44:
+                     $scope.lugarNacimiento='Santa Teresa';                 
+                 break;
+                case 45:
+                    $scope.lugarNacimiento=	'Dolores';
+                break;
+                case 46:
+                    $scope.lugarNacimiento=	'La Paz Carazo';
+                break;
+                case 47:
+                     $scope.lugarNacimiento='El Rosario';                 
+                 break;
+                case 48:
+                    $scope.lugarNacimiento=	'La Conquista';
+                break;
+                case 81:
+                    $scope.lugarNacimiento=	'Chinandega';
+                break;
+                case 82:
+                    $scope.lugarNacimiento=	'Corinto';
+                break;
+                case 83:
+                    $scope.lugarNacimiento=	'El Realejo';
+                break;
+                case 84:
+                    $scope.lugarNacimiento=	'Chichigalpa';
+                break;
+                case 85:
+                    $scope.lugarNacimiento=	'Posoltega';
+                break;
+                case 86:
+                    $scope.lugarNacimiento=	'El Viejo';
+                break;
+                case 87:
+                    $scope.lugarNacimiento=	'Puerto Morazán';
+                break;
+                case 88:
+                    $scope.lugarNacimiento=	'Somotillo';
+                break;
+                case 89:
+                    $scope.lugarNacimiento=	'Villa Nueva';
+                break;
+                case 90:
+                    $scope.lugarNacimiento=	'Santo Tomás del Norte';
+                break;
+                case 91:
+                    $scope.lugarNacimiento=	'Cinco Pinos';
+                break;
+                case 92:
+                    $scope.lugarNacimiento=	'San Francisco Del Norte';
+                break;
+                case 93:
+                    $scope.lugarNacimiento=	'San Pedro Del Norte';
+                break;
+                case 121:
+                    $scope.lugarNacimiento=	'Juigalpa';
+                break;
+                case 122:
+                    $scope.lugarNacimiento=	'Acoyapa';
+                break;
+                case 123:
+                    $scope.lugarNacimiento=	'Santo Tomás';
+                break;
+                case 124:
+                    $scope.lugarNacimiento=	'Villa Sandino';
+                break;
+                case 125:
+                $scope.lugarNacimiento=	'San Pedro de Lóvago';
+                break;
+                case 126:
+                    $scope.lugarNacimiento=	'La Libertad';
+                break;
+                case 127:
+                        $scope.lugarNacimiento=	'Santo Domingo';
+                break;
+                case 128:
+                        $scope.lugarNacimiento=	'Comalapa';
+                break;
+                case 129:
+                        $scope.lugarNacimiento=	'San Francisco Cuapa';
+                break;
+                case 130:
+                        $scope.lugarNacimiento=	'El Coral';
+                break;
+                case 161:
+                        $scope.lugarNacimiento=	'Estelí';
+                break;
+                case 162:
+                        $scope.lugarNacimiento=	'Pueblo Nuevo';
+                break;
+                case 163:
+                        $scope.lugarNacimiento=	'Condega';
+                break;
+                case 164:
+                        $scope.lugarNacimiento=	'San Juan Limay';
+                break;
+                case 165:
+                        $scope.lugarNacimiento=	'La Trinidad';
+                break;
+                case 166:
+                        $scope.lugarNacimiento=	'San Nicolás';
+                break;
+                case 201:
+                        $scope.lugarNacimiento=	'Granada';
+                break;
+                case 202:
+                        $scope.lugarNacimiento=	'Nandaime';
+                break;
+                case 203:
+                        $scope.lugarNacimiento=	'Diriomo';
+                break;
+                case 204:
+                        $scope.lugarNacimiento=	'Diriá';
+                break;
+                case 241:
+                        $scope.lugarNacimiento=	'Jinotega';
+                break;
+                case 242:
+                        $scope.lugarNacimiento=	'San Rafael Del Norte';
+                break;
+                case 243:
+                        $scope.lugarNacimiento=	'San Sebastián Yalí';
+                break;
+                case 244:
+                        $scope.lugarNacimiento=	'La Concordia';
+                break;
+                case 245:
+                        $scope.lugarNacimiento=	'San José De Bocay';
+                break;
+                case 246:
+                        $scope.lugarNacimiento=	'El Cuá Bocay';
+                break;
+                case 247:
+                        $scope.lugarNacimiento=	'Santa María Pantasma';
+                break;
+                case 281:
+                        $scope.lugarNacimiento=	'León';
+                break;
+                case 283:
+                        $scope.lugarNacimiento=	'El Jicaral';
+                break;
+                case 284:
+                        $scope.lugarNacimiento=	'La Paz Centro';
+                break;
+                case 285:
+                        $scope.lugarNacimiento=	'Santa Rosa Del Peñón';
+                break;
+                case 286:
+                        $scope.lugarNacimiento=	'Quetzalguaque';
+                break;
+                case 287:
+                        $scope.lugarNacimiento=	'Nagarote';
+                break;
+                case 288:
+                        $scope.lugarNacimiento=	'El Sauce';
+                break;
+                case 289:
+                        $scope.lugarNacimiento=	'Achuapa';
+                break;
+                case 290:
+                        $scope.lugarNacimiento=	'Telica';
+                break;
+                case 291:
+                        $scope.lugarNacimiento=	'Larreynaga Malpaisillo';
+                break;
+                
+                default:
+                    $scope.lugarNacimiento="CODIGO NO REGISTRADO"; 
+                }
+     }  
+     $scope.validarCedula=()=>{
+         $scope.obtenerCedula();
+        let error;             
+        if(dia>=31|| mes>12 || digitosCedula.length<16){
+         error=  alertify.error('Revisa Cedula mal Escrita');
+                 
+     } 
+         return error;
      }
+     
 }]);
