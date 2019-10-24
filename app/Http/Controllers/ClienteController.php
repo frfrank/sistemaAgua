@@ -75,7 +75,8 @@ class ClienteController extends Controller
         $cliente->tipoDocumento=$request->tipoDocumento;
         $cliente->cedula=$request->cedula;   
         $cliente->edad=$request->edad; 
-        $cliente->direccion=$request->direccion; 
+        $cliente->direccion=$request->direccion;
+        $cliente->lugarNacimiento=$request->lugarNacimiento; 
         $cliente->descripcion = $request->descripcion;
         $cliente->idcomunidad=$request->comunidad;
         $cliente->estado = $request->estado;
