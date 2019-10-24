@@ -23,14 +23,14 @@ class ClienteController extends Controller
             $persona = Persona::join('comunidades','idcomunidad','=','comunidades.id')
             ->select('personas.id','personas.nombre','personas.apellido',
             DB::raw('concat(personas.nombre, " ", personas.apellido) as nombreCompleto'),
-            'personas.descripcion','personas.telefono','personas.direccion','comunidades.id',
+            'personas.descripcion','personas.telefono','personas.direccion','comunidades.id as idcomunidad',
             'comunidades.nombre as nombreComunidad','personas.estado')
             ->orderBy('personas.id', 'desc')->paginate(5); //Traigo todos los datos y los ordeno de manera descendente
         } else {            
             $persona = Persona::join('comunidades','idcomunidad','=','comunidades.id')
             ->select('personas.id','personas.nombre','personas.apellido',
             DB::raw('concat(personas.nombre, " ", personas.apellido) as nombreCompleto'),
-            'personas.descripcion','personas.telefono','personas.direccion','comunidades.id',
+            'personas.descripcion','personas.telefono','personas.direccion','comunidades.id as idcomunidad',
             'comunidades.nombre as nombreComunidad','personas.estado')
             ->where('personas.nombre', 'like', '%' . $buscar . '%')
             ->orWhere('personas.apellido', 'like', '%' . $buscar . '%')
@@ -104,5 +104,11 @@ class ClienteController extends Controller
         $cliente = Persona::findOrFail($request->id);
         $cliente->estado = 0;
         $cliente->save();
+    }
+    public function destroy(Request $request){
+        $id=$request->id;
+        $cliente= DB::table('personas')
+             ->where('id', '=',$id)->delete();         
+ 
     }
 }

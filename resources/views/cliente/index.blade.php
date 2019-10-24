@@ -64,9 +64,8 @@
               <td ng-if="lis.estado==1"><span class="badge badge-success">Activo</span></td>
               <td ng-if="lis.estado==0"><span class="badge badge-danger">Inactivo</span></td>
               <td><a href="" ><i class="fa fa-pencil text-primary" ng-click="abrirModal('comunidad','actualizar',lis)" title="Editar"></i></a>
-            <a href=""  ng-if="lis.estado==1"ng-click="desactivarComunidad(lis)"><i class="fa fa-trash text-danger" title="Desactivar"></i></a>
-            <a href=""  ng-if="lis.estado==0"ng-click="activarComunidad(lis)"><i class="fa fa-check-square text-success" title="Activar"></i></a>
-            
+              <a href="" ng-click="eliminarCliente(lis)"><i class="fa fa-trash text-danger" title="Eliminar"></i></a>
+                    
               </td>                         
           </tr>                      
           </tbody>
