@@ -122,8 +122,9 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         if(opcion=='actualizar'){
             var nombre='nombre';
             for(var i=0;i<arreglo.length;i++){
-                 var nombre='nombre';                
-                    if(arreglo[i][nombre]==$scope.nombre){
+                 var nombre='nombre';
+                 var id='id';                
+                    if(arreglo[i][nombre]==$scope.nombre && arreglo[i][id]!=$scope.cargo_id){
                         alertify.error('ERROR AL ACTUALIZAR: el cargo ya existe',);
                     }
                 }
