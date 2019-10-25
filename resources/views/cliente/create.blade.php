@@ -62,32 +62,29 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="form-group">
             <label for="descripcion" class="text-primary"> Descripción: </label>
             <textarea row="4" ng-model="descripcion" class="form-control"></textarea>
         </div>
-        </div>               
-    </div>
-    <div class="row">
-    <div class="col-md-6 col-sm-12 col-xs-12">
+        </div>  
+        <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="form-group">
             <label for="comunidad" class="text-primary"> Comunidad: </label>
-            <select class="form-control" ng-model="comunidad" >
+            <select  class="form-control" ng-model="comunidad" >
+            <option value="value2" selected>Value 2</option>
             <option  ng-repeat="item in comunidades" value="@{{item.id}}" > @{{item.nombre}}</option>
             </select>
         </div>
-        </div>
+        </div>             
     </div>
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="form-group">
             <label for="direccion" class="text-primary"> Dirección: </label>
-            <textarea row="2" ng-model="direccion" class="form-control"></textarea>
+            <textarea row="1" ng-model="direccion" class="form-control"></textarea>
         </div>
-        </div>               
-    </div>
-    <div class="row">
+        </div> 
         
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="form-group">
@@ -97,15 +94,16 @@
             <option value="0">INACTIVO</option>
             </select>
         </div>
-        </div>
-        </div>
-               
+        </div>              
+    </div>
+    
     </div>    
 </form>
       <div class="container">      
     <div class="row">
         <div class="col-md-6">
-        <button class="btn btn-success" ng-click="guardarCliente()" > Guardar</button>
+        <button class="btn btn-success" ng-model="botonGuardar"ng-show="botonGuardar" ng-click="guardarCliente()" > Guardar</button>
+        <button class="btn btn-primary" ng-model="botonActualizar" ng-show="botonActualizar" ng-click="actualizarCliente()" > Actualizar</button>
         <button class="btn btn-danger" ng-click="ocultarFormulario()">Cancelar</a>
         </div>
         </div></div>

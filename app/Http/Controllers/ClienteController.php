@@ -21,15 +21,19 @@ class ClienteController extends Controller
 
         if ($buscar == '') {
             $persona = Persona::join('comunidades','idcomunidad','=','comunidades.id')
-            ->select('personas.id','personas.nombre','personas.apellido',
+            ->select('personas.id','personas.nombre','personas.apellido','personas.cedula',
+            'personas.tipoDocumento',
             DB::raw('concat(personas.nombre, " ", personas.apellido) as nombreCompleto'),
+            'personas.lugarNacimiento', 'personas.edad',
             'personas.descripcion','personas.telefono','personas.direccion','comunidades.id as idcomunidad',
             'comunidades.nombre as nombreComunidad','personas.estado')
             ->orderBy('personas.id', 'desc')->paginate(5); //Traigo todos los datos y los ordeno de manera descendente
         } else {            
             $persona = Persona::join('comunidades','idcomunidad','=','comunidades.id')
-            ->select('personas.id','personas.nombre','personas.apellido',
+            ->select('personas.id','personas.nombre','personas.apellido','personas.cedula',
+            'personas.tipoDocumento',
             DB::raw('concat(personas.nombre, " ", personas.apellido) as nombreCompleto'),
+            'personas.lugarNacimiento', 'personas.edad',
             'personas.descripcion','personas.telefono','personas.direccion','comunidades.id as idcomunidad',
             'comunidades.nombre as nombreComunidad','personas.estado')
             ->where('personas.nombre', 'like', '%' . $buscar . '%')
@@ -87,9 +91,17 @@ class ClienteController extends Controller
 
     public function update(Request $request) {
         // if (!$request->ajax()) return redirect('/');
-        $cliente = Persona::findOrFail($request->id);
+        $cliente = Persona::findOrFail($request->id);        
         $cliente->nombre = $request->nombre;
+        $cliente->apellido=$request->apellido;
+        $cliente->telefono=$request->telefono;
+        $cliente->tipoDocumento=$request->tipoDocumento;
+        $cliente->cedula=$request->cedula;   
+        $cliente->edad=$request->edad; 
+        $cliente->direccion=$request->direccion;
+        $cliente->lugarNacimiento=$request->lugarNacimiento; 
         $cliente->descripcion = $request->descripcion;
+        $cliente->idcomunidad=$request->comunidad;
         $cliente->estado = $request->estado;
         $cliente->save();
     }

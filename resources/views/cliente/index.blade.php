@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-md-2">
         <br>
-<button class="btn btn-success" ng-click="mostrarFormulario()">  Nuevo Cliente </button>
+<button class="btn btn-success" ng-click="mostrarFormulario('nuevo')">  Nuevo Cliente </button>
 </div>
 <div class="col-md-8"></div>
 
@@ -43,27 +43,28 @@
             <a href="" ><i class="fa fa-arrow-down"  style="font-size:15px"  ng-click="ordenar('ordenarMenorAMayor')"></i></a>            
             <a href><i class="fa fa-arrow-up"  ng-hide="mostrar==1" style="font-size:15px"  ng-click="ordenar('ordenarMayorAMenor')"></i></a>
           </th>
-            
+          <th scope="col" class="text-primary">Identidad</th>            
             <th scope="col" class="text-primary">Barrio/Comunidad</th>
             <th scope="col" class="text-primary">Dirección</th>
-            <th scope="col" class="text-primary">Teléfono</th>
+            
             <th scope="col" class="text-primary">Estado</th>
                 </tr>
             </thead>           
 
             <tbody>
-          <tr ng-if="elementos.length<1"> <td colspan="6"><h3 class="text-success text-center">No hay Datos que Mostrar</h3></td></tr>
+          <tr ng-if="elementos.length<1"> <td colspan="7"><h3 class="text-success text-center">No hay Datos que Mostrar</h3></td></tr>
           
              <tr ng-repeat="(index, lis) in elementos| orderBy:ordenarPor">
               <th scope="row">@{{index +1}}</th>
               <td>@{{lis.nombreCompleto }} @{{lis.apellido}}</td>
+              <td>@{{lis.cedula}}</td>            
               <td>@{{lis.nombreComunidad}}</td>
               <td>@{{lis.direccion}}</td>
-              <td>@{{lis.telefono}}</td>
+              
                                         
               <td ng-if="lis.estado==1"><span class="badge badge-success">Activo</span></td>
               <td ng-if="lis.estado==0"><span class="badge badge-danger">Inactivo</span></td>
-              <td><a href="" ><i class="fa fa-pencil text-primary" ng-click="abrirModal('comunidad','actualizar',lis)" title="Editar"></i></a>
+              <td><a href="" ><i class="fa fa-pencil text-primary" ng-click="mostrarFormulario('actualizar',lis)" title="Editar"></i></a>
               <a href="" ng-click="eliminarCliente(lis)"><i class="fa fa-trash text-danger" title="Eliminar"></i></a>
                     
               </td>                         

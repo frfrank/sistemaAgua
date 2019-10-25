@@ -1,6 +1,7 @@
 var myApp = angular.module('myApp', []);
 
 myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
+    $scope.clienteId=0;
     $scope.nombre = '';
     $scope.apellido='';
     $scope.telefono='';
@@ -67,7 +68,9 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.comunidades=response.data;
             })
    }
-   $scope.mostrarFormulario=()=>{
+   $scope.mostrarFormulario=(opcion,data=[])=>{
+   switch(opcion){
+       case 'nuevo':           
     $scope.mostrar=1;
     $scope.nombre = '';
     $scope.apellido='';
@@ -77,7 +80,29 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     $scope.edad='';
     $scope.descripcion = '';
     $scope.direccion='';
-    $scope.comunidad='';
+    $scope.comunidad='1';
+    $scope.botonGuardar=true;
+    $scope.botonActualizar=false;
+
+    break;
+        case 'actualizar':                   
+    $scope.mostrar=1;
+    $scope.clienteId=data['id'];
+    $scope.nombre = data['nombre'];
+    $scope.apellido=data['apellido'];
+    $scope.telefono=data['telefono'];
+    $scope.tipoDocumento=data['tipoDocumento'];
+    $scope.cedula=data['cedula'];
+    $scope.edad=data['edad'];
+    $scope.descripcion = data['descripcion'];
+    $scope.direccion=data['direccion'];
+    $scope.comunidad=data['idcomunidad'].toString();    
+    $scope.lugarNacimiento=data['lugarNacimiento'];
+    $scope.botonActualizar=true;
+    $scope.botonGuardar=false;
+
+    break;
+   }
     
    }
    $scope.ocultarFormulario=()=>{
@@ -145,14 +170,15 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                  var cedula='cedula';                
                     if(arreglo[i][cedula]==$scope.cedula){
                         alertify.error('ERROR AL GUARDAR: YA EXISTE UNA PERSONA CON ESTE NUMERO DE CEDULA');
-                    }
+                    }6
                 }
         }  
         if(opcion=='actualizar'){
             var cedula='cedula';
+            var id='id'
             for(var i=0;i<arreglo.length;i++){
                  var cedula='cedula';                
-                    if(arreglo[i][cedula]==$scope.cedula){
+                    if(arreglo[i][cedula]==$scope.cedula && arreglo[i][id]!=$scope.clienteId){
                         alertify.error('ERROR AL ACTUALIZAR:  YA EXISTE UNA PERSONA CON ESTE NUMERO DE CEDULA');
                     }
                 }
@@ -163,15 +189,24 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
        
 
 //Funtion para actualizar un Registro
-    $scope.actualizarCargo = () => {
-        //console.log("Funcion de actualizar datos");
-        $scope.validarDatos();
-        $scope.verificarNombre('actualizar');
-        $http.put('/comunidad/actualizarcomunidad', {
+    $scope.actualizarCliente = () => {
+        $scope.verificarCedula('actualizar');
+            if($scope.validarCedula()){
+                return;
+            }
+        $http.put('/cliente/actualizarClientes', {
+            id:$scope.clienteId,
             nombre: $scope.nombre,
+            apellido:$scope.apellido,
+            telefono:$scope.telefono,
+            tipoDocumento:$scope.tipoDocumento,
+            cedula:$scope.cedula,
+            edad:$scope.edad,
             descripcion: $scope.descripcion,
-            estado: $scope.estado,
-            id: $scope.cargo_id
+            direccion:$scope.direccion,
+            comunidad:$scope.comunidad,
+            lugarNacimiento:$scope.lugarNacimiento,
+            estado: $scope.estado
 
         }).then(function mySuccess(response) {
             Swal.fire({
@@ -181,6 +216,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 showConfirmButton: false,
                 timer: 1500
             })
+            $scope.ocultarFormulario();
             $scope.listarclientes(1,$scope.buscar);
             
 
