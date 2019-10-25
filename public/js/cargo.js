@@ -33,7 +33,6 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.pagination = respuesta.pagination;
                 $scope.pages = $scope.pagesNumber();
                 $scope.totalRegistros = respuesta.pagination.total;
-               console.log($scope.elementos);
                 return respuesta;
 
             });

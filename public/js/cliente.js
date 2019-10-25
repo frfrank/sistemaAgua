@@ -170,7 +170,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                  var cedula='cedula';                
                     if(arreglo[i][cedula]==$scope.cedula){
                         alertify.error('ERROR AL GUARDAR: YA EXISTE UNA PERSONA CON ESTE NUMERO DE CEDULA');
-                    }6
+                    }
                 }
         }  
         if(opcion=='actualizar'){
