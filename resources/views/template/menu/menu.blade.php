@@ -38,6 +38,7 @@
         <a class="dropdown-item" href="{{route('cargo')}}"><i class="fa fa-list"></i> Cargos</a>
         <a class="dropdown-item" href="{{route('servicio')}}"><i class="fa fa-list"></i> Servicios</a>
         <a class="dropdown-item" href="{{route('indexComunidad')}}"><i class="fa fa-list"></i> Comunidades</a>
+        <a class="dropdown-item" href="{{route('indexRoles')}}"><i class="fa fa-list"></i> Roles</a>
 
         <div role="separator" class="dropdown-divider"></div>
         <a class="dropdown-item" href="#three">three</a>

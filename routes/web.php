@@ -52,6 +52,14 @@ Route::put('/cliente/activar','ClienteController@activar');
 Route::get('/cliente/listarComunidad','ClienteController@listarComunidad');
 Route::post('/cliente/eliminarCliente','ClienteController@destroy');
 
+Route::get('/roles/index', 'RolesController@index')->name('indexRoles');
+Route::get('/roles/listarRoles','RolesController@listaRoles');
+Route::post('/roles/guardarRoles','RolesController@store');
+Route::put('/roles/actualizarRoles','RolesController@update');
+Route::get('/roles/listaVerificarNombre','RolesController@listaVerificarNombre');
+Route::put('/roles/desactivar','RolesController@desactivar');
+Route::put('/roles/activar','RolesController@activar');
+
 
 
 
