@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('template.principal');
+    return view('template.inicio');
 });
 Route::get('/cargo/cargo', 'CargoController@index')->name('cargo');
 Route::get('/cargo/listacargo','CargoController@listaCargos');
