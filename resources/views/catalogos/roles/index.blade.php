@@ -1,7 +1,8 @@
 @extends('template.principal')
 @section('seccion')
+
 <div class="container">
-  <h1 class="text-success"><i class="fa fa-list-ul"></i> Lista de Comunidades</h1>
+  <h1 class="text-success"><i class="fa fa-list-ul"></i> Lista de Roles</h1>
 </div>
 
 
@@ -9,7 +10,7 @@
 <div class="row">
     <div class="col-md-2">
         <br>
-<button type="button" class="btn btn-success" ng-click="abrirModal('comunidad','nuevo')">  Nueva Comunidad </button>
+<button type="button" class="btn btn-success" ng-click="abrirModal('rol','nuevo')">  Nuevo Rol </button>
 </div>
 <div class="col-md-8"></div>
 
@@ -18,7 +19,7 @@
  </div>
  <div >
   <form action="">
-  <input type="text" ng-model="buscar" placeholder="Búsqueda por Nombre" ng-keydown="listarComunidad(1,buscar)" class="form-control">
+  <input type="text" ng-model="buscar" placeholder="Búsqueda por Nombre" ng-keydown="listarRoles(1,buscar)" class="form-control">
   </form>
  </div>
  <br>
@@ -45,17 +46,16 @@
 
             <tbody>
           <tr ng-if="elementos.length<1"> <td colspan="5"><h3 class="text-success text-center">No hay Datos que Mostrar</h3></td></tr>
-          
              <tr ng-repeat="(index, lis) in elementos| orderBy:ordenarPor">
                             <th scope="row">@{{index +1}}</th>
                             <td>@{{lis.nombre }}</td>
                             <td>@{{lis.descripcion}}</td>
-                            <td ng-if="lis.estado==1"><span class="badge badge-success">Activo</span></td>
-                            <td ng-if="lis.estado==0"><span class="badge badge-danger">Inactivo</span></td>
-                            <td><a href="" ><i class="fa fa-pencil text-primary" ng-click="abrirModal('comunidad','actualizar',lis)" title="Editar"></i></a>
-                           <a href=""  ng-if="lis.estado==1"ng-click="desactivarComunidad(lis)"><i class="fa fa-trash text-danger" title="Desactivar"></i></a>
-                           <a href=""  ng-if="lis.estado==0"ng-click="activarComunidad(lis)"><i class="fa fa-check-square text-success" title="Activar"></i></a>
-                           
+                            <td ng-if="lis.estado==1"><span class="badge badge-success">ACTIVO</span></td>
+                            <td ng-if="lis.estado==0"><span class="badge badge-danger">INACTIVO</span></td>
+                            <td><a href="" ><i class="fa fa-pencil text-primary" ng-click="abrirModal('rol','actualizar',lis)" title="Editar"></i></a>
+                           <a href=""  ng-if="lis.estado==1"ng-click="desactivarRol(lis)"><i class="fa fa-trash text-danger" title="Desactivar"></i></a>
+                           <a href=""  ng-if="lis.estado==0"ng-click="activarRol(lis)"><i class="fa fa-check-square text-success" title="Activar"></i></a>
+                          
                             </td>                         
                         </tr>                      
                         </tbody>
@@ -97,27 +97,23 @@
                     <div class="form-group">
                         <label>Estado</label>
                         <select class="form-control" ng-model="estado">
-                            <option ng-value="1" selected>Activo</option>
-                            <option ng-value="0">Inactivo</option>
+                            <option ng-value="1" selected>ACTIVO</option>
+                            <option ng-value="0">INACTIVO</option>
                         </select>
                     </div>
                 </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" ng-click="cerrarModal()" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary"  ng-show="botonGuardar" ng-click="guardarCargo()">Guardar Cambios</button>
-                <button type="button" class="btn btn-success"  ng-hide="botonGuardar" ng-click="actualizarCargo()">Actualizar Cambios</button>
+                <button type="button" class="btn btn-primary"  ng-show="botonGuardar" ng-click="guardarRol()">Guardar Cambios</button>
+                <button type="button" class="btn btn-success"  ng-hide="botonGuardar" ng-click="actualizarRol()">Actualizar Cambios</button>
               </div>
             </div>
           </div>
                 </div>
-
-    <script src="{{ asset('jquery/jquery-3.4.1.min.js')}}"></script>
+    
     <script src="{{ asset('angularjs/angular.min.js')}}"></script>   
-    <script src="{{ asset('/alertify/alertify.min.js')}}"></script>
-
-
-    <script src="{{ asset('js/comunidad.js')}}"></script>   
+    <script src="{{ asset('js/roles.js')}}"></script>   
     
 <style >
         .modal-content{

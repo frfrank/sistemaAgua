@@ -5,7 +5,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     $scope.tituloModal = '';
     $scope.nombre = '';
     $scope.descripcion = '';
-    $scope.cargo_id = 0,
+    $scope.roles_id = 0,
     $scope.error = '';
     $scope.elementos = [];
     $scope.pagination = {
@@ -16,7 +16,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         'from': 0,
         'to': 0,
     },
-    $scope.offset = 3;
+        $scope.offset = 3;
     $scope.buscar = '';
     $scope.id='';
     $scope.ordenarPor='';
@@ -25,11 +25,11 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
 
 //function para listar todos los registros
-    $scope.listarComunidad = (page,buscar) => {
-        $http.get('/comunidad/listaComunidades?page=' + page +'&buscar='+ buscar) //Esta ruta ya la tengo definida
+    $scope.listarRoles = (page,buscar) => {
+        $http.get('/roles/listarRoles?page=' + page +'&buscar='+ buscar) //Esta ruta ya la tengo definida
             .then(function (response) {
                 respuesta = response.data;
-                $scope.elementos = respuesta.comunidad.data;
+                $scope.elementos = respuesta.roles.data;
                 $scope.pagination = respuesta.pagination;
                 $scope.pages = $scope.pagesNumber();
                 $scope.totalRegistros = respuesta.pagination.total;
@@ -37,12 +37,11 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
             });
     }
-
-   $scope.listarComunidad(1,$scope.buscar='');
+    $scope.listarRoles(1,$scope.buscar='');
     
     //De esta maner declaro una funcion
     $scope.abrirModal = (modelo, opcion, data = []) => {
-        if (modelo == "comunidad") {
+        if (modelo == "rol") {
             if (opcion == 'nuevo') {
                 $scope.modal = 1;
                 $scope.nombre = '';
@@ -57,10 +56,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
             }
         }
-        if (modelo == "comunidad") {
+        if (modelo == "rol") {
             if (opcion == "actualizar") {
                 $scope.modal = 1;
-                $scope.cargo_id = data['id'];
+                $scope.roles_id = data['id'];
                 $scope.nombre = data['nombre'];
                 $scope.descripcion = data['descripcion'];
                 $scope.estado = data['estado'];
@@ -76,10 +75,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
             $scope.errorMostrarMsj = '';
         },
 //Function para guardar un registro utlizando promesa
-        $scope.guardarCargo = () => {
+        $scope.guardarRol = () => {
             $scope.validarDatos();
             $scope.verificarNombre('guardar');
-            $http.post('/comunidad/guardarcomunidad', {
+            $http.post('/roles/guardarRoles', {
                 nombre: $scope.nombre,
                 descripcion: $scope.descripcion,
                 estado: $scope.estado
@@ -92,7 +91,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    $scope.listarComunidad(1,$scope.buscar);
+                    $scope.listarRoles(1,$scope.buscar);
                     $scope.cerrarModal();
 
                 }, function myError(response) {
@@ -104,25 +103,28 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         }
         //Verficar Nombre
        $scope.verificarNombre=(opcion)=>{
-        $http.get('/comunidad/listaVerificarNombre') //Esta ruta ya la tengo definida
+        $http.get('/roles/listaVerificarNombre') //Esta ruta ya la tengo definida
         .then(function (response) {
             $scope.arregloNombres = response.data;
-            var arreglo=$scope.arregloNombres;        
+            var arreglo=$scope.arregloNombres;
+        
         if(opcion=='guardar'){
             var nombre='nombre';
             for(var i=0;i<arreglo.length;i++){
                  var nombre='nombre';                
                     if(arreglo[i][nombre]==$scope.nombre){
-                        alertify.error('ERROR AL GUARDAR: LA COMUNIDAD YA EXISTE',);
+                        alertify.error('ERROR AL GUARDAR: el rol ya existe',);
                     }
                 }
         }  
+        
         if(opcion=='actualizar'){
             var nombre='nombre';
             for(var i=0;i<arreglo.length;i++){
-                 var nombre='nombre';                
-                    if(arreglo[i][nombre]==$scope.nombre){
-                        alertify.error('ERROR AL ACTUALIZAR: LA COMUNIDAD YA EXISTE',);
+                 var nombre='nombre';
+                 var id='id';                
+                    if(arreglo[i][nombre]==$scope.nombre && arreglo[i][id]!=$scope.roles_id){
+                        alertify.error('ERROR AL ACTUALIZAR: el rol ya existe',);
                     }
                 }
         }               
@@ -132,15 +134,15 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
        
 
 //Funtion para actualizar un Registro
-    $scope.actualizarCargo = () => {
+    $scope.actualizarRol = () => {
         //console.log("Funcion de actualizar datos");
         $scope.validarDatos();
         $scope.verificarNombre('actualizar');
-        $http.put('/comunidad/actualizarcomunidad', {
+        $http.put('/roles/actualizarRoles', {
             nombre: $scope.nombre,
             descripcion: $scope.descripcion,
             estado: $scope.estado,
-            id: $scope.cargo_id
+            id: $scope.roles_id
 
         }).then(function mySuccess(response) {
             Swal.fire({
@@ -150,7 +152,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 showConfirmButton: false,
                 timer: 1500
             })
-            $scope.listarComunidad(1,$scope.buscar);
+            $scope.listarRoles(1,$scope.buscar);
             $scope.cerrarModal();
 
         }, function myError(response) {
@@ -158,7 +160,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
         })
     }
-    $scope.desactivarComunidad=(data=[])=>{
+    $scope.desactivarRol=(data=[])=>{
         Swal.fire({
             title: 'Estas Seguro?',
             text: "Quieres desactivar el Registro!",
@@ -170,9 +172,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
           }).then((result) => {
             if (result.value) {
                 $scope.id=data['id'];
-            $http.put('/comunidad/desactivar', {id: $scope.id  
+            $http.put('/roles/desactivar', {
+                id: $scope.id  
             }).then(function mySuccess(response) {
-                 $scope.listarComunidad(1,$scope.buscar);              
+                 $scope.listarRoles(1,$scope.buscar);              
 
             }, function myError(response) {
                 console.log("error", response);
@@ -186,7 +189,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
           });
         
     }
-    $scope.activarComunidad=(data=[])=>{
+    $scope.activarRol=(data=[])=>{
         Swal.fire({
             title: 'Estas Seguro?',
             text: "Quieres Activar el Registro!",
@@ -198,9 +201,9 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
           }).then((result) => {
             if (result.value) {
                 $scope.id=data['id'];
-            $http.put('/comunidad/activar', {id: $scope.id  
+            $http.put('/roles/activar', {id: $scope.id  
             }).then(function mySuccess(response) {
-                 $scope.listarComunidad(1,$scope.buscar);              
+                 $scope.listarRoles(1,$scope.buscar);              
 
             }, function myError(response) {
                 console.log("error", response);
@@ -214,6 +217,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
           });
         
     }
+  
     $scope.validarDatos = () => {
         $scope.errorMostrarMsj;
 
@@ -254,7 +258,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     }
     $scope.cambiarPagina = (page) => {
         $scope.pagination.current_page = page;
-        $scope.listarComunidad(page,$scope.buscar);
+        $scope.listarRoles(page,$scope.buscar);
     }
     $scope.ordenar=(parametro)=>{
         if(parametro=="ordenarMenorAMayor"){
@@ -278,7 +282,6 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
          
     }
     
-
 }]);
 
 

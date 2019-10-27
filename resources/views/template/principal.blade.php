@@ -7,6 +7,7 @@
     <title>@yield('title','Default') | Panel de Administración</title>
     
 	<link rel="stylesheet" href="{{ asset('css/plantilla.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/css/font-awesome.min.css') }}"/>
 	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 	<link rel="stylesheet" href="{{ asset('alertify/css/alertify.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('alertify/css/themes/default.css') }}">  
@@ -22,7 +23,7 @@
 	<div class="container" style="background:#E9ECEF">
 	    @yield('content')
 	</div>
-    
+    <br>
     @yield('seccion')   
     </div>    
     

@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('template.principal');
-});
+    return view('template.inicio');
+})->name('inicio');
 Route::get('/cargo/cargo', 'CargoController@index')->name('cargo');
 Route::get('/cargo/listacargo','CargoController@listaCargos');
 Route::post('/cargo/guardarcargo','CargoController@store');
@@ -51,6 +51,14 @@ Route::put('/cliente/desactivar','ClienteController@desactivar');
 Route::put('/cliente/activar','ClienteController@activar');
 Route::get('/cliente/listarComunidad','ClienteController@listarComunidad');
 Route::post('/cliente/eliminarCliente','ClienteController@destroy');
+
+Route::get('/roles/index', 'RolesController@index')->name('indexRoles');
+Route::get('/roles/listarRoles','RolesController@listaRoles');
+Route::post('/roles/guardarRoles','RolesController@store');
+Route::put('/roles/actualizarRoles','RolesController@update');
+Route::get('/roles/listaVerificarNombre','RolesController@listaVerificarNombre');
+Route::put('/roles/desactivar','RolesController@desactivar');
+Route::put('/roles/activar','RolesController@activar');
 
 
 
