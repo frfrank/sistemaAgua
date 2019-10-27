@@ -35,7 +35,7 @@
  
  <p class="text-primary" ng-if="elementos.length>0"> Mostrando  @{{elementos.length}} de @{{totalRegistros}} Registros</p>
 
-<table class="table">
+<table class="table table-responsive">
           <thead>
           <tr>
             <th scope="col">#</th>
