@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('template.inicio');
-});
+})->name('inicio');
 Route::get('/cargo/cargo', 'CargoController@index')->name('cargo');
 Route::get('/cargo/listacargo','CargoController@listaCargos');
 Route::post('/cargo/guardarcargo','CargoController@store');

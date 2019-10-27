@@ -1,5 +1,6 @@
 @extends('template.principal')
 @section('seccion')
+
 <style>
      #cedula {
             text-transform: uppercase;
@@ -56,7 +57,7 @@
           
              <tr ng-repeat="(index, lis) in elementos| orderBy:ordenarPor">
               <th scope="row">@{{index +1}}</th>
-              <td>@{{lis.nombreCompleto }} @{{lis.apellido}}</td>
+              <td>@{{lis.nombreCompleto }} </td>
               <td>@{{lis.cedula}}</td>            
               <td>@{{lis.nombreComunidad}}</td>
               <td>@{{lis.direccion}}</td>

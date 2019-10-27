@@ -1,18 +1,22 @@
-@extends('template.principal');
+@extends('template.principal')
 @section('seccion')
 
 <div class="container">
 <br>
 <div class=row>
 <div class="col-md-3 col-sm-12 col-xs-12">
+<a href="{{route('indexCliente')}}">
 <div class="card " style="width: 16rem; background:#F5B400; color:white;">
   <div class="card-body clientes">
     <h4 class="card-title text-center">Clientes</h4>
     <hr>
         <h1 class="text-center" style="font-size: 120px;"><i class="fa fa-users"></i></h1>    
   </div>
-</div> <br>
 </div>
+</a>
+ <br>
+</div>
+
 <div class="col-md-4 col-sm-12 col-xs-12">
 <div class="card " style="width: 22rem; background:#556370; color:white;">
   <div class="card-body clientes">
