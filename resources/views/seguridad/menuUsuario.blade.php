@@ -77,13 +77,13 @@
       <th scope="col">Nombre</th>
       <th scope="col">Descripcion</th>
       <th scope="col">Estado</th>
-      <th></th>
+      <th></th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td></td>
-      <td><input type="text" class="form-control"></td>
+      <td><input type="text" ng-model="buscar" class="form-control" ng-keydown="listarRoles(1,buscar)"></td>
       <td><input type="text" class="form-control"></td>
       <td></td>
       <td></td>
