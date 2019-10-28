@@ -15,6 +15,13 @@ class Persona extends Model
 
 public function comunidad()
 {
-    return $this->hasOne('App\Comunidad');}
+    return $this->hasOne('App\Comunidad');
+}
+
+    public function user()
+    {
+        return $this->hasOne('App\User');
+    }
 
 }
+

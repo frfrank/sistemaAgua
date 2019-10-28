@@ -1,12 +1,9 @@
 @extends('template.principal')
 @section('seccion')
 
-<div class="container">
-  <h1 class="text-success"><i class="fa fa-list-ul"></i> Lista de Roles</h1>
-</div>
-
-
 <div class="container" ng-app="myApp" ng-controller="MyController">
+<br>
+<h2 class="text-success"><i class="fa fa-list-ul"></i> Lista de Roles</h2>
 <div class="row">
     <div class="col-md-2">
         <br>

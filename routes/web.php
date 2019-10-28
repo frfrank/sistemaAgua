@@ -61,6 +61,10 @@ Route::put('/roles/desactivar','RolesController@desactivar');
 Route::put('/roles/activar','RolesController@activar');
 
 
+Route::get('/user/vistaUsuarios', 'UserController@vistaUsuarios')->name('vistaUsuarios');
+
+
+
 
 
 

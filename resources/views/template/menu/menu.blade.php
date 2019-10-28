@@ -48,12 +48,13 @@
     </form>-->
     <div style="color:white;margin-right:8%;" class="my-2 my-lg-0">
    <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  <i class="fa fa-user"></i> Francisco
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <i class="fa fa-user"></i> Francisco</button>
     <div class="dropdown-menu">
         <a class="dropdown-item" href=""><i class="fa fa-user"></i> Perfil</a>
         <a class="dropdown-item" href=""><i class="fa fa-tasks"></i> Configuración</a>
-        <a class="dropdown-item" href=""><i class="fa fa-shield"></i> Seguridad</a>
+        <a class="dropdown-item" href="{{route('vistaUsuarios')}}"><i class="fa fa-shield"></i> Seguridad</a>
         <a class="dropdown-item" href=""><i class="fa fa-building-o"></i> Plan de Trabajo</a>
         <a class="dropdown-item" href=""><i class="fa fa-power-off"></i> Cerrar Sesión</a>
         </div>
