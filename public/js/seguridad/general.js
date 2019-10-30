@@ -2,10 +2,12 @@ var myApp = angular.module('myApp', []);
 
 myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     $scope.modal = 0;
+    $scope.mostrarFor=0;
     $scope.tituloModal = '';
     $scope.nombre = '';
     $scope.descripcion = '';
-    $scope.roles_id = 0,
+    $scope.roles_id = 0;
+    $scope.idUsuario=0;
     $scope.error = '';
     $scope.elementos = [];
     $scope.pagination = {
@@ -18,6 +20,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     },
         $scope.offset = 3;
     $scope.buscar = '';
+    $scope.buscarUsuario='';
     $scope.id='';
     $scope.ordenarPor='';
     $scope.arregloNombres=[];
@@ -32,7 +35,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.elementos = respuesta.roles.data;
                 $scope.pagination = respuesta.pagination;
                 $scope.pages = $scope.pagesNumber();
-                $scope.totalRegistros = respuesta.pagination.total;
+                $scope.totalRegistrosRol = respuesta.pagination.total;
                 return respuesta;
 
             });
@@ -47,9 +50,12 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.nombre = '';
                 $scope.descripcion = '';
                 $scope.estado = 1;
-                $scope.tituloModal = "Nuevo Registro";
+                $scope.tituloModal = "Nuevo Rol";
                 $scope.botonGuardar = true;
-
+                $scope.mostrarcajas=1;
+                $scope.background="#2FA360";
+                $scope.icono="fa fa-file-text";
+                $scope.mostrarBotones='1';
                 if ($scope.nombre == '') {
                     $scope.isValido = 'is-valid';
                 }
@@ -63,9 +69,49 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.nombre = data['nombre'];
                 $scope.descripcion = data['descripcion'];
                 $scope.estado = data['estado'];
-                $scope.tituloModal = "Actualizar Registro";
+                $scope.tituloModal = "Actualizar Rol";
                 $scope.botonGuardar = false;
+                $scope.mostrarcajas=1;
+                $scope.background="#3BA8C9";
+                $scope.icono="fa fa-pencil-square";
+                $scope.mostrarBotones="1";
+
             }
+        }
+        if(modelo=="usuario"){
+            if(opcion=="nuevo"){
+                $scope.modal=1;
+                $scope.nombrePerfil='';
+                $scope.perfilApellidos='';
+                $scope.correoElectronico=''
+                $scope.nombreUsuario='';
+                $scope.contraseniaUsuario='';
+                $scope.rol='1';
+                $scope.tituloModal = "Nuevo Usuario";
+                $scope.mostrarcajas=2;
+                $scope.background="#2FA360";
+                $scope.icono="fa fa-file-text";
+                $scope.mostrarBotones="2";
+                $scope.botonGuardar = true;
+            }
+        }
+        if(modelo=="usuario"){  
+            if(opcion=="actualizar"){                
+                $scope.modal=1;
+                $scope.idUsuario=data['id'];
+                $scope.nombrePerfil=data['nombre'];
+                $scope.perfilApellidos=data['apellidos'];
+                $scope.correoElectronico=data['email'];
+                $scope.nombreUsuario=data['nombreUsuario'];
+                $scope.contraseniaUsuario=data['password'];
+                $scope.rol=data['idrol'].toString();
+                $scope.tituloModal ="Actualizar Usuario";
+                $scope.mostrarcajas=2;
+                $scope.background="#3BA8C9";
+                $scope.icono="fa fa-pencil-square";
+                $scope.mostrarBotones="2";
+                $scope.botonActualizar = true;
+            }              
         }
     },
         $scope.cerrarModal = () => {
@@ -281,7 +327,95 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         }
          
     }
+
+    //CODIGO PARA LOS USUARIOS
+    $scope.listarUsuarios = (page,buscarUsuario) => {
+        $http.get('/user/listaUsuario?page=' + page +'&buscar='+ buscarUsuario) //Esta ruta ya la tengo definida
+            .then(function (response) {
+                respuesta = response.data;
+                $scope.elementosUsuarios = respuesta.perfil.data;
+                $scope.pagination = respuesta.pagination;
+                $scope.pages = $scope.pagesNumber();
+                $scope.totalRegistros = respuesta.pagination.total;
+                return respuesta;
+
+            });
+    }
     
+    $scope.listarUsuarios(1,$scope.buscarUsuario='');
+
+    $scope.cargarRoles=()=>{
+        $http.get('/user/cargarRoles') 
+            .then(function (response) {
+             $scope.listaRoles = response.data;   
+                       
+
+            });
+        
+    }
+    $scope.cargarRoles();
+    
+    $scope.guardarUsuario = () => {        
+           // $scope.verificarCedula('guardar');
+        $http.post('/user/guardarUsuario', {
+            nombre: $scope.nombrePerfil,
+            apellidos: $scope.perfilApellidos,
+            email:$scope.correoElectronico,
+            nombreUsuario:$scope.nombreUsuario,
+            password:$scope.contraseniaUsuario,
+            idrol:$scope.rol
+            
+
+        }).then(function mySuccess(response) {
+                Swal.fire({
+                    //position: 'top-end',
+                    type: 'success',
+                    title: 'Guardado Exitosamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $scope.listarUsuarios(1,$scope.buscar);
+                $scope.cerrarModal();
+
+            }, function myError(response) {
+                console.log("error");
+
+
+            }
+        )
+    }
+    $scope.actualizarUsuario = () => {        
+        // $scope.verificarCedula('guardar');
+     $http.put('/user/actualizar', {
+
+         nombre: $scope.nombrePerfil,
+         apellidos: $scope.perfilApellidos,
+         email:$scope.correoElectronico,
+         nombreUsuario:$scope.nombreUsuario,
+         password:$scope.contraseniaUsuario,
+         idrol:$scope.rol,
+         id:$scope.idUsuario
+         
+
+     }).then(function mySuccess(response) {
+             Swal.fire({
+                 //position: 'top-end',
+                 type: 'success',
+                 title: 'Actualizado Exitosamente',
+                 showConfirmButton: false,
+                 timer: 1500
+             })
+             $scope.listarUsuarios(1,$scope.buscar);
+             $scope.cerrarModal();
+
+         }, function myError(response) {
+             console.log("error");
+
+
+         }
+     )
+ }
+
 }]);
 
 

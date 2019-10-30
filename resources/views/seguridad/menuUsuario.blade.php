@@ -5,7 +5,7 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Usuarios</a>
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" ng-click="cerrarFormularioUsuario()" role="tab" aria-controls="home" aria-selected="true">Usuarios</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Roles</a>
@@ -22,39 +22,43 @@
 <div class="tab-content">
   <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
   <br>
-  <div class="alert alert-success" role="alert">
-  Usuarios
+  <div ng-show="mostrarFor==0">
+  <div class="row">
+  <div class="col-md-10">
+  <h3 class="text-success">Usuarios</h3>  
+  </div>
+  <div class="col-md-2">
+  <a href="" class="btn btn-success" ng-click="abrirModal('usuario','nuevo')" ><i class="fa fa-plus"></i> Nuevo Usuario </a>
+  </div>
+  </div>
+  <div  ng-if="elementos.length>0" class="text-primary">
+           Mostrando  @{{elementosUsuarios.length}} 
 </div>
   <table class="table table-striped">
   <thead>
-    <tr>
+    <tr  style="font-size:18px">
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Email</th>
+      <th scope="col">Estado</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+    <tr ng-repeat="(index, lis) in elementosUsuarios" style="font-size:16px">
+      <th scope="row" >@{{index +1}}</th>
+      <td ng-bind="lis.nombreUsuario"></td>
+      <td  ng-bind="lis.email"></td>
+      <td ng-if="lis.estado==1" ><a href="">
+      <span class="badge badge-success" style="width:100%;height:20px">DESBLOQUEAR</span></td></a>
+      <td ng-if="lis.estado==0"><a href="">
+      <span class="badge badge-danger" style="width:100%;height:20px">BLOQUEAR</span></td></a>
+      <td><a href="" ng-click="abrirModal('usuario','actualizar',lis)" title="Editar"><i class="fa fa-edit" style="font-size:20px"></i></a></td>
     </tr>
     <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
   </tbody>
 </table>
+</div>
+
   </div>
   <!--segundo panel  para mostra Roñles-->
  <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -68,7 +72,7 @@
   </div>
   </div>
   <div  ng-if="elementos.length>0" class="text-primary">
-           Mostrando  @{{elementos.length}} de @{{totalRegistros}} Registros
+           Mostrando  @{{elementos.length}} de @{{totalRegistrosRol}} Registros
 </div>
   <table class="table table-striped">
   <thead>
@@ -126,14 +130,17 @@
   <div class="modal" tabindex="-1"  ng-class="{'mostrar' : modal}" role="dialog" id="mostrarFormulario">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">@{{tituloModal}}</h5>
+              <div class="modal-header" style="background:@{{background}};color:white">
+                <h5 class="modal-title"><i class="@{{icono}}" aria-hidden="true"></i>
+                                @{{tituloModal}}</h5>
                 <button type="button" class="close" ng-click="cerrarModal()" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">        
                 <form>
+                <!--para guardar Roles-->
+                <div ng-show="mostrarcajas==1">
                     <div class="form-group">
                         <label class="control-label">Nombre</label>
                         <input type="text" ng-model="nombre"  class="form-control @{{isvalido}}">
@@ -150,16 +157,64 @@
                             <option ng-value="0">INACTIVO</option>
                         </select>
                     </div>
+                    </div>
+                    <!--final para guardar Rol-->
+                    <!--Inicio Para Guardar Usuario -->
+                    <div ng-show="mostrarcajas==2">
+                    <div class="form-group">
+                        <label class="control-label">Nombre</label>
+                        <input type="text" ng-model="nombrePerfil"  class="form-control @{{isvalido}}">
+                        
+                    </div>
+                    <div class="form-group">
+                      <label>Apellidos</label>
+                        <input type="text" ng-model="perfilApellidos"  class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="text" ng-model="correoElectronico"  class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input type="text" ng-model="nombreUsuario"  class="form-control">
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" ng-model="contraseniaUsuario"  class="form-control">
+                    </div> 
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="roles">Rol</label>
+                    <select  ng-model="rol" class="form-control" >
+                        <option ng-repeat="roles in listaRoles" value="@{{roles.id}}">@{{roles.nombre}}</option>
+                    </select>
+                    </div> 
+                    </div>
+                    </div>
+                    </div>
+                    <!--Final para Guardar Usuario-->
                 </form>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" ng-click="cerrarModal()" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary"  ng-show="botonGuardar" ng-click="guardarRol()">Guardar Cambios</button>
-                <button type="button" class="btn btn-success"  ng-hide="botonGuardar" ng-click="actualizarRol()">Actualizar Cambios</button>
+              <div class="modal-footer" ng-show="mostrarBotones==1">
+                <button type="button" class="btn btn-danger" ng-click="cerrarModal()" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success"  ng-show="botonGuardar" ng-click="guardarRol()">Guardar Rol</button>
+                <button type="button" class="btn btn-primary"  ng-hide="botonGuardar" ng-click="actualizarRol()">Actualizar Rol</button>
+              </div>
+              <div class="modal-footer" ng-show="mostrarBotones==2">
+                <button type="button" class="btn btn-danger" ng-click="cerrarModal()" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success"  ng-show="botonGuardar" ng-click="guardarUsuario()">Guardar Usuario</button>
+                <button type="button" class="btn btn-primary"  ng-hide="botonGuardar" ng-click="actualizarUsuario()">Actualizar Usuario</button>
               </div>
             </div>
           </div>
 <!-- fin del modal de actualizar y guardar-->
+
+<!--Modal para guardar los Usuarios-->
+
+<!-- Fin del Modal para guardar Usuarios -->
 
 
 </div>
@@ -190,4 +245,5 @@
     }
 </style>
 @endsection
+
 
