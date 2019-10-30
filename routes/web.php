@@ -62,6 +62,17 @@ Route::put('/roles/activar','RolesController@activar');
 
 
 Route::get('/user/vistaUsuarios', 'UserController@vistaUsuarios')->name('vistaUsuarios');
+Route::get('/user/listaUsuario', 'UserController@listaUsuario')->name('listaUsuario');
+Route::get('/user/createUsuario', 'UserController@createUsuario')->name('crearUsuario');
+Route::post('/user/guardarUsuario','UserController@store');
+Route::put('/user/actualizar','UserController@update');
+Route::get('/user/cargarRoles', 'UserController@cargarRoles');
+
+
+
+
+
+
 
 
 

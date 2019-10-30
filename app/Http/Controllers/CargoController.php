@@ -17,6 +17,7 @@ class CargoController extends Controller {
     }
 
     public function listaCargos(Request $request) {
+        // if ($request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
 

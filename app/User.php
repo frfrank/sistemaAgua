@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nombreUsuario', 'email', 'password','estado','idrol'
+        'nombreUsuario', 'password','estado','idrol'
     ];
     public $timestamps = false;
 
@@ -42,8 +42,8 @@ class User extends Authenticatable
     public function rol(){
         return $this->belongsTo('App\Roles');
     }
-    public function persona(){
-        return $this->belongsTo('App\Persona');
+    public function perfilUsuario(){
+        return $this->belongsTo('App\PerfilUsuario');
 
     }
 }
