@@ -99,3 +99,7 @@ Route::put('/user/activar','UserController@activar');
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
