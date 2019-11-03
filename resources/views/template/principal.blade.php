@@ -27,8 +27,8 @@
     @yield('seccion')   
     </div>    
     
-    <footer class="fixed-bottom footer">    
-    <p>Sistema Laravel</p></footer>  
+    <!--<footer class="fixed-bottom footer">    
+    <p>Sistema Laravel</p></footer>  -->
 
     <script src="{{ asset('/jquery/jquery-3.4.1.min.js')}}"></script>  
     <script src="{{ asset('/jquery/jquery.mask.min.js')}}"></script>      

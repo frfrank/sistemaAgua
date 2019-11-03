@@ -19,14 +19,13 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         'to': 0,
     },
         $scope.offset = 3;
-    $scope.buscar = '';
-    $scope.buscarUsuario='';
     $scope.id='';
     $scope.ordenarPor='';
     $scope.arregloNombres=[];
     var respuesta;
-
-
+    $scope.buscar='';
+    $scope.buscarUsuario="";
+    
 //function para listar todos los registros
     $scope.listarRoles = (page,buscar) => {
         $http.get('/roles/listarRoles?page=' + page +'&buscar='+ buscar) //Esta ruta ya la tengo definida
@@ -40,7 +39,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
 
             });
     }
-    $scope.listarRoles(1,$scope.buscar='');
+    $scope.listarRoles(1,$scope.buscar);
     
     //De esta maner declaro una funcion
     $scope.abrirModal = (modelo, opcion, data = []) => {
@@ -93,6 +92,13 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.icono="fa fa-file-text";
                 $scope.mostrarBotones="2";
                 $scope.botonGuardar = true;
+                $scope.bordererrorNombre="";
+                $scope.bordererrorApellido="";
+                $scope.bordererrorCorreo="";
+                $scope.bordererrorUsuario="";
+                $scope.bordererrorContrasenia="";
+
+
             }
         }
         if(modelo=="usuario"){  
@@ -110,7 +116,13 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                 $scope.background="#3BA8C9";
                 $scope.icono="fa fa-pencil-square";
                 $scope.mostrarBotones="2";
-                $scope.botonActualizar = true;
+                $scope.botonGuardar = false;                
+                $scope.bordererrorNombre="";
+                $scope.bordererrorApellido="";
+                $scope.bordererrorCorreo="";
+                $scope.bordererrorUsuario="";
+                $scope.bordererrorContrasenia="";
+
             }              
         }
     },
@@ -119,6 +131,8 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
             $scope.nombre = '';
             $scope.descripcion = '';
             $scope.errorMostrarMsj = '';
+            $scope.bordererrorNombre="";
+
         },
 //Function para guardar un registro utlizando promesa
         $scope.guardarRol = () => {
@@ -306,6 +320,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
         $scope.pagination.current_page = page;
         $scope.listarRoles(page,$scope.buscar);
     }
+    $scope.cambiarPaginaUsuario = (page) => {
+        $scope.pagination.current_page = page;
+        $scope.listarUsuarios(page,$scope.buscarUsuario,$scope.buscarUsuarioEmail);
+    }
     $scope.ordenar=(parametro)=>{
         if(parametro=="ordenarMenorAMayor"){
          $scope.ordenarPor='nombre';
@@ -329,20 +347,20 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     }
 
     //CODIGO PARA LOS USUARIOS
-    $scope.listarUsuarios = (page,buscarUsuario) => {
-        $http.get('/user/listaUsuario?page=' + page +'&buscar='+ buscarUsuario) //Esta ruta ya la tengo definida
+    $scope.listarUsuarios = (page,buscarUsuario,buscarUsuarioEmail) => {
+        $http.get('/user/listaUsuario?page=' + page +'&buscarusuario='+ buscarUsuario + '&buscarusuarioemail=' + buscarUsuarioEmail) //Esta ruta ya la tengo definida
             .then(function (response) {
                 respuesta = response.data;
                 $scope.elementosUsuarios = respuesta.perfil.data;
-                $scope.pagination = respuesta.pagination;
-                $scope.pages = $scope.pagesNumber();
-                $scope.totalRegistros = respuesta.pagination.total;
+                 $scope.pagination = respuesta.pagination;
+                $scope.pagesUsuario = $scope.pagesNumber();
+                $scope.totalRegistrosUsuarios = respuesta.pagination.total;
                 return respuesta;
 
             });
     }
     
-    $scope.listarUsuarios(1,$scope.buscarUsuario='');
+    $scope.listarUsuarios(1,$scope.buscarUsuario='',$scope.buscarUsuarioEmail='');
 
     $scope.cargarRoles=()=>{
         $http.get('/user/cargarRoles') 
@@ -356,7 +374,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
     $scope.cargarRoles();
     
     $scope.guardarUsuario = () => {        
-           // $scope.verificarCedula('guardar');
+        $scope.verificarUsuarioUnico('guardar');
+        $scope.verificarEmail('guardar');
+        $scope.validarPerfilUsuario();
+        $scope.validarEmail();
         $http.post('/user/guardarUsuario', {
             nombre: $scope.nombrePerfil,
             apellidos: $scope.perfilApellidos,
@@ -374,7 +395,7 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                $scope.listarUsuarios(1,$scope.buscar);
+                $scope.listarUsuarios(1,$scope.buscarUsuario);
                 $scope.cerrarModal();
 
             }, function myError(response) {
@@ -384,8 +405,10 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
             }
         )
     }
-    $scope.actualizarUsuario = () => {        
-        // $scope.verificarCedula('guardar');
+    $scope.actualizarUsuario = () => {    
+        $scope.verificarUsuarioUnico('actualizar');
+        $scope.verificarEmail('actualizar');
+        $scope.validarPerfilUsuario();
      $http.put('/user/actualizar', {
 
          nombre: $scope.nombrePerfil,
@@ -415,6 +438,221 @@ myApp.controller('MyController', ['$scope', '$http', function ($scope, $http) {
          }
      )
  }
+    $scope.validarPerfilUsuario=()=>{
+        
+        $scope.errorMostrarMsj=[];
+        
+        if (!$scope.nombrePerfil) {
+            $scope.errorNombre = $scope.errorMostrarMsj.push('El campo Nombre No puede quedar Vacio'); 
+            $scope.bordererrorNombre="border border-danger";
+        }        
+        if (!$scope.perfilApellidos) {
+            $scope.errorApellido = $scope.errorMostrarMsj.push("El campo apellido no puede quedar Vacio");
+            $scope.bordererrorApellido="border border-danger";
+
+        }        
+        if (!$scope.correoElectronico) {
+            $scope.errorCorreo = $scope.errorMostrarMsj.push("El campo email no puede quedar Vacio");
+            $scope.bordererrorCorreo="border border-danger";
+        }
+        if (!$scope.nombreUsuario) {
+            $scope.errorNombreUsuario = $scope.errorMostrarMsj.push("El campo usuario no puede quedar Vacio");
+            $scope.bordererrorUsuario="border border-danger";
+
+        }
+        if (!$scope.contraseniaUsuario) {
+            $scope.errorContrasenia = $scope.errorMostrarMsj.push("La contraseña no puede quedar Vacio");
+            $scope.bordererrorContrasenia="border border-danger";
+
+        }
+        return $scope.errorMostrarMsj;
+
+    }
+    $scope.pintarErrorCajaNombre=()=>{
+        if(!$scope.nombrePerfil){
+            $scope.bordererrorNombre="";
+        }
+        else{
+            $scope.bordererrorNombre="border border-success";
+        }
+        
+          }
+    $scope.pintarErrorCajaApellido=()=>{
+            if(!$scope.perfilApellidos){
+                $scope.bordererrorApellido="";
+            }
+            else{
+                $scope.bordererrorApellido="border border-success";
+
+            }            
+        }   
+    $scope.pintarErrorCajaCorreo=()=>{
+        if(!$scope.correoElectronico){
+            $scope.bordererrorCorreo="";
+        }
+        else{
+            $scope.bordererrorCorreo="border border-success";
+
+        }
+       
+        }
+    $scope.pintarErrorCajaUsuario=()=>{
+        if(!$scope.nombreUsuario){
+            $scope.bordererrorUsuario="";
+        }
+        else{
+            $scope.bordererrorUsuario="border border-success";
+
+        }
+      
+         }
+    $scope.pintarErrorCajaContrasenia=()=>{
+            if(!$scope.contraseniaUsuario){
+                $scope.bordererrorContrasenia="";
+            }
+            else{
+                $scope.bordererrorContrasenia="border border-success";
+    
+            }
+         }
+
+    $scope.verificarUsuarioUnico=(opcion)=>{ 
+    $http.get('/user/cargarUsuarios') 
+    .then(function (response) {
+     $scope.listaUsuariosUnicos = response.data;  
+     console.log($scope.listaUsuariosUnicos)  ;
+     
+     var arregloUsuarios=$scope.listaUsuariosUnicos;
+        
+     if(opcion=='guardar'){
+         var nombre='nombreUsuario';
+         for(var i=0;i<arregloUsuarios.length;i++){
+              var nombre='nombreUsuario';                
+                 if(arregloUsuarios[i][nombre]==$scope.nombreUsuario){
+                     alertify.error('ERROR AL GUARDAR: YA EXISTE UN USUARIO CON ESTE NOMBRE') ;
+                 }
+             }
+     }  
+     
+     if(opcion=='actualizar'){
+             for(var i=0;i<arregloUsuarios.length;i++){
+              var nombre='nombreUsuario';
+              var id='id';                
+                 if(arregloUsuarios[i][nombre]==$scope.nombreUsuario && arregloUsuarios[i][id]!=$scope.idUsuario){
+                     alertify.error('ERROR AL ACTUALIZAR: YA EXISTE UN USUARIO CON ESTE NOMBRE',);
+                 }
+             }
+     }  
+
+    });
+    }
+    
+    $scope.verificarEmail=(opcion)=>{ 
+        $http.get('/user/cargarEmailUsuarios') 
+        .then(function (response) {
+         $scope.listaEmailUnicos = response.data;  
+                
+         var arregloEmail=$scope.listaEmailUnicos;
+            
+         if(opcion=='guardar'){
+             var email='email';
+             for(var i=0;i<arregloEmail.length;i++){
+                  var email='email';                
+                     if(arregloEmail[i][email]==$scope.correoElectronico){
+                         alertify.error('ERROR AL GUARDAR: YA EXISTE UN USUARIO CON ESTE EMAIL') ;
+                     }
+                 }
+         }  
+         
+         if(opcion=='actualizar'){
+                 for(var i=0;i<arregloEmail.length;i++){
+                  var email='email';
+                  var id='id';                
+                     if(arregloEmail[i][email]==$scope.correoElectronico && arregloEmail[i][id]!=$scope.idUsuario){
+                         alertify.error('ERROR AL ACTUALIZAR: YA EXISTE UN USUARIO CON ESTE EMAIL',);
+                     }
+                 }
+         }  
+    
+        });
+        
+    }
+    $scope.validarEmail=()=>{
+        let arregloEmail;
+        $scope.arregloError=[];
+        arregloEmail=$scope.correoElectronico;
+               
+        for(let i=0;i<=arregloEmail.length; i++){
+           //console.log(arregloEmail[i]) ;
+            if(arregloEmail[i]=='@'){
+                $scope.errorValidarEmail=("Email Correcto");
+            }
+            else{
+               // console.log("Incorrecto");
+               $scope.errorEmail=$scope.arregloError.push("Verifique al email le falta el signo de @");
+            }
+        }
+        return $scope.arregloError;
+    }
+            
+    $scope.desactivarUsuario=(data=[])=>{
+            Swal.fire({
+                title: 'Estas Seguro?',
+                text: "Quieres Bloquear el usuario!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Bloquear!'
+              }).then((result) => {
+                if (result.value) {
+                    $scope.user_id=data['id'];
+                $http.put('/user/desactivar', {
+                    id: $scope.user_id 
+                }).then(function mySuccess(response) {
+                     $scope.listarUsuarios(1,$scope.buscarUsuario);              
+    
+                }, function myError(response) {
+                    console.log("error", response);
+                })
+                  Swal.fire(
+                    'Bloqueado!',
+                    'Bloqueado Exitosamente.',
+                    'success'
+                  )
+                }
+              });
+            
+        }
+    $scope.activarUsuario=(data=[])=>{
+            Swal.fire({
+                title: 'Estas Seguro?',
+                text: "Quieres Desbloquear el Registro!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Desbloquear!'
+              }).then((result) => {
+                if (result.value) {
+                    $scope.user_id=data['id'];
+                $http.put('/user/activar', {id: $scope.user_id  
+                }).then(function mySuccess(response) {
+                     $scope.listarUsuarios(1,$scope.buscar);              
+    
+                }, function myError(response) {
+                    console.log("error", response);
+                })
+                  Swal.fire(
+                    'Activado!',
+                    'Activado Exitosamente.',
+                    'success'
+                  )
+                }
+              });
+            
+        }
+    
 
 }]);
 

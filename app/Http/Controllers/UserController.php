@@ -20,9 +20,10 @@ class UserController extends Controller
     {
         //if (!$request->ajax()) return redirect('/');
 
-        $buscar = $request->buscarUsuario;   
+        $buscar = $request->buscarusuario;
+        $buscarEmail =$request->buscarusuarioemail;   
         
-        if ($buscar==''){
+        if ($buscar=='' || $buscarEmail==''){
             $perfil = User::join('perfil_usuario','users.id','=','perfil_usuario.id')
             ->join('roles','users.idrol','=','roles.id')
             ->select('perfil_usuario.id','perfil_usuario.nombre','perfil_usuario.apellidos','perfil_usuario.email',
@@ -34,7 +35,10 @@ class UserController extends Controller
             ->join('roles','users.idrol','=','roles.id')
             ->select('perfil_usuario.id','perfil_usuario.nombre','perfil_usuario.apellidos','perfil_usuario.email',
             'users.id as idusuario','users.nombreUsuario','users.password' ,'users.estado','users.idrol','roles.nombre as rol')
-            ->where('personas.nombre', 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(3);
+            ->where('users.nombreUsuario', 'like', '%'. $buscar . '%')
+            ->orWhere('perfil_usuario.email','like', '%' .$buscarEmail . '%')
+            ->orderBy('perfil_usuario.id', 'desc')->paginate(5);
+        
         }
         
         return [
@@ -93,12 +97,36 @@ class UserController extends Controller
             DB::rollBack();
         }
     }
+    public function activar(Request $request) {
+        $user = User::findOrFail($request->id);
+        $user->estado  = 1;
+        $user->save();
+    }
+
+    public function desactivar(Request $request) {
+        $user = User::findOrFail($request->id);
+        $user->estado  = 0;
+        $user->save();
+    }
     public function cargarRoles(){
         $roles = DB::table('roles')
         ->select('id', 'nombre')
         ->where('estado','=',1)
         ->get();
         return $roles;
+    }
+
+    public function cargarUsuarios(){
+        $usuarios = DB::table('users')
+        ->select('id', 'nombreUsuario')
+         ->get();
+        return $usuarios;
+    }
+    public function cargarEmailUsuarios(){
+        $usuarios=DB::table('perfil_usuario')
+        ->select('id','email')
+        ->get();
+        return $usuarios;
     }
    
 }

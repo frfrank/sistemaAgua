@@ -5,7 +5,7 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" ng-click="cerrarFormularioUsuario()" role="tab" aria-controls="home" aria-selected="true">Usuarios</a>
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"  role="tab" aria-controls="home" aria-selected="true">Usuarios</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Roles</a>
@@ -32,8 +32,9 @@
   </div>
   </div>
   <div  ng-if="elementos.length>0" class="text-primary">
-           Mostrando  @{{elementosUsuarios.length}} 
+           Mostrando  @{{elementosUsuarios.length}}  de @{{totalRegistrosUsuarios}}
 </div>
+
   <table class="table table-striped">
   <thead>
     <tr  style="font-size:18px">
@@ -44,19 +45,42 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td></td>
+      <td><input type="text" class="form-control border border-success" ng-model="buscarUsuario"  ng-keydown="listarUsuarios(1,buscarUsuario)"></td>
+      <td><input type="text" class="form-control border border-success" ng-model="buscarUsuarioEmail" ng-keydown="listarUsuarios(1,1,buscarUsuarioEmail)"></td>
+      <td><select class="form-control border border-success" ng-model="buscarEstado">
+      <option value="1">ACTIVOS</option>
+      <option value="0">BLOQUEADOS</option>
+      <select></td>
+      <td></td>
+    </tr>
     <tr ng-repeat="(index, lis) in elementosUsuarios" style="font-size:16px">
       <th scope="row" >@{{index +1}}</th>
       <td ng-bind="lis.nombreUsuario"></td>
       <td  ng-bind="lis.email"></td>
-      <td ng-if="lis.estado==1" ><a href="">
-      <span class="badge badge-success" style="width:100%;height:20px">DESBLOQUEAR</span></td></a>
-      <td ng-if="lis.estado==0"><a href="">
-      <span class="badge badge-danger" style="width:100%;height:20px">BLOQUEAR</span></td></a>
+      <td ng-if="lis.estado==1" ><a href="" ng-click="desactivarUsuario(lis)">
+      <span class="badge badge-success" style="width:100%;height:20px">BLOQUEAR</span></td></a>
+      <td ng-if="lis.estado==0"><a href="" ng-click="activarUsuario(lis)">
+      <span class="badge badge-danger" style="width:100%;height:20px">DESBLOQUEAR</span></td></a>
       <td><a href="" ng-click="abrirModal('usuario','actualizar',lis)" title="Editar"><i class="fa fa-edit" style="font-size:20px"></i></a></td>
     </tr>
     <tr>
   </tbody>
 </table>
+
+<nav aria-label="...">
+    <ul class="pagination">
+    <li class="page-item" ng-if="pagination.current_page>1">
+      <a class="page-link" href="#" tabindex="-1" ng-click="cambiarPaginaUsuario(pagination.current_page-1)">Ant</a>
+    </li>
+    <li ng-repeat="page in pagesUsuario" class="page-item"><a class="page-link"  href="#" ng-click="cambiarPaginaUsuario(page)">@{{page}}</a></li>
+      <li class="page-item" ng-if="pagination.current_page<pagination.last_page">
+      <a class="page-link" href="#" ng-click="cambiarPaginaUsuario(pagination.current_page+1)">Sig</a>
+    </li>
+    </ul>
+    </nav>
+    <br><br> 
 </div>
 
   </div>
@@ -87,7 +111,7 @@
   <tbody>
     <tr>
       <td></td>
-      <td><input type="text" ng-model="buscar" class="form-control" ng-keydown="listarRoles(1,buscar)"></td>
+      <td><input type="text" ng-model="buscar" class="form-control" ng-keypress="listarRoles(1,buscar)"></td>
       <td><input type="text" class="form-control"></td>
       <td></td>
       <td></td>
@@ -162,32 +186,40 @@
                     <!--Inicio Para Guardar Usuario -->
                     <div ng-show="mostrarcajas==2">
                     <div class="form-group">
-                        <label class="control-label">Nombre</label>
-                        <input type="text" ng-model="nombrePerfil"  class="form-control @{{isvalido}}">
+                        <label class="control-label">Nombre *</label>
+                        <input type="text" ng-model="nombrePerfil"  class="form-control @{{bordererrorNombre}}" ng-keydown="pintarErrorCajaNombre()">
+                        <span class="text-danger" ng-show="nombrePerfil<1">@{{errorMostrarMsj[0]}}</span>
                         
                     </div>
                     <div class="form-group">
-                      <label>Apellidos</label>
-                        <input type="text" ng-model="perfilApellidos"  class="form-control">
+                      <label>Apellidos *</label>
+                        <input type="text" ng-model="perfilApellidos"  class="form-control  @{{bordererrorApellido}}" ng-keydown="pintarErrorCajaApellido()">
+                        <span class="text-danger" ng-show="perfilApellidos<1">@{{errorMostrarMsj[1]}}</span>
                     </div>
                     <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input type="text" ng-model="correoElectronico"  class="form-control">
+                        <label>Correo Electrónico *</label>
+                        <input type="email" ng-model="correoElectronico"  class="form-control  @{{bordererrorCorreo}}" ng-keydown="pintarErrorCajaCorreo()" required>
+                        <span class="text-danger" ng-show="correoElectronico<1">@{{errorMostrarMsj[2]}}</span><br>
+                        <span class="text-danger" ng-hide="correoElectronico=='@'">@{{arregloError[0]}}</span>
                     </div>
                     <div class="form-group">
-                        <label>Usuario</label>
-                        <input type="text" ng-model="nombreUsuario"  class="form-control">
+                        <label>Usuario *</label>
+                        <input type="text" ng-model="nombreUsuario"  class="form-control  @{{bordererrorUsuario}}" ng-keydown="pintarErrorCajaUsuario()">
+                        <span class="text-danger" ng-show="nombreUsuario<1" >@{{errorMostrarMsj[3]}}</span>
+
                     </div>
                     <div class="row">
                     <div class="col-md-6">
                     <div class="form-group">
                         <label>Contraseña</label>
-                        <input type="password" ng-model="contraseniaUsuario"  class="form-control">
+                        <input type="password" ng-model="contraseniaUsuario"  class="form-control  @{{bordererrorContrasenia}}" ng-keydown="pintarErrorCajaContrasenia()">
+                        <span class="text-danger" ng-show="contraseniaUsuario<1">@{{errorMostrarMsj[4]}}</span>
+
                     </div> 
                     </div>
                     <div class="col-md-6">
                     <div class="form-group">
-                      <label for="roles">Rol</label>
+                      <label for="roles">Rol *</label>
                     <select  ng-model="rol" class="form-control" >
                         <option ng-repeat="roles in listaRoles" value="@{{roles.id}}">@{{roles.nombre}}</option>
                     </select>

@@ -67,6 +67,13 @@ Route::get('/user/createUsuario', 'UserController@createUsuario')->name('crearUs
 Route::post('/user/guardarUsuario','UserController@store');
 Route::put('/user/actualizar','UserController@update');
 Route::get('/user/cargarRoles', 'UserController@cargarRoles');
+Route::get('/user/cargarUsuarios', 'UserController@cargarUsuarios');
+Route::get('/user/cargarEmailUsuarios', 'UserController@cargarEmailUsuarios');
+Route::put('/user/desactivar','UserController@desactivar');
+Route::put('/user/activar','UserController@activar');
+
+
+
 
 
 
