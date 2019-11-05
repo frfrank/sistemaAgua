@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/inicio', function () {
     return view('template.inicio');
 })->name('inicio');
 Route::get('/cargo/cargo', 'CargoController@index')->name('cargo');
@@ -73,33 +73,10 @@ Route::put('/user/desactivar','UserController@desactivar');
 Route::put('/user/activar','UserController@activar');
 
 
+Route::get('/', 'Auth\LoginController@abrirLogin');
+Route::post('/authenticate', 'Auth\LoginController@authenticate')->name('authenticate');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

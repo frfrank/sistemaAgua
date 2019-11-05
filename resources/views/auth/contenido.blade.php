@@ -1,27 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    
-	<link rel="stylesheet" href="{{ asset('css/plantilla.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/css/font-awesome.min.css') }}"/>
-	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-	<link rel="stylesheet" href="{{ asset('alertify/css/alertify.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('alertify/css/themes/default.css') }}">  
+	<title>Login V2</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="login/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="login/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="login/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="login/css/util.css">
+	<link rel="stylesheet" type="text/css" href="login/css/main.css">
+<!--===============================================================================================-->
 </head>
 <body>
-    <div class="container">
-        @yield('login')
-    </div>
-
-    <script src="{{ asset('/jquery/jquery-3.4.1.min.js')}}"></script>  
-    <script src="{{ asset('/jquery/jquery.mask.min.js')}}"></script>      
-    <script src="{{ asset('/alertify/alertify.min.js')}}"></script>
-    <script src="{{ asset('/sweetalerta2/sweetalert2.all.min.js')}}"></script>
-    <script src="{{ asset('/plugins/js/bootstrap.min.js')}}"></script>
+	
+    @yield('login')
+    
+<!--===============================================================================================-->
+	<script src="login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="login/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="login/vendor/bootstrap/js/popper.js"></script>
+	<script src="login/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="login/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="login/vendor/daterangepicker/moment.min.js"></script>
+	<script src="login/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="login/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="login/js/main.js"></script>
 
 </body>
 </html>
