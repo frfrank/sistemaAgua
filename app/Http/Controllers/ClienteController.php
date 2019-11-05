@@ -16,7 +16,8 @@ class ClienteController extends Controller
     }
 
     public function listaClientes(Request $request) {
-         
+        if (!$request->ajax()) return redirect('/');
+
         $buscar = $request->buscar;
 
         if ($buscar == '') {

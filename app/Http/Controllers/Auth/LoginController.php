@@ -17,15 +17,30 @@ class LoginController extends Controller
     }
     public function authenticate(Request $request)
     {
-        $nombre=$request->nombreUsuario;
-        $password=$request->password;
-
-        if (Auth::attempt(['nombreUsuario' => $nombre, 'password' => $password, 'estado' => 1])) {
+        $this->validateLogin($request);    
+     
+        if (Auth::attempt(['nombreUsuario' => $request->nombreUsuario, 'password' => $request->password, 'estado' => 1])) {
             return redirect()->route('inicio');
-
         }
         
+            return back()
+            ->withErrors(['nombreUsuario' => trans('auth.failed')])
+            ->withInput(request(['nombreUsuario']));
+
+      
+
+    }
+    protected function validateLogin(Request $request){
+        $this->validate($request,[
+            'nombreUsuario' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
     }
     
-  
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        return redirect('/');
+    }
 }

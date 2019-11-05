@@ -12,12 +12,16 @@
 						Bienvenido
 					</span>
 					<span class="login100-form-title p-b-48">
-						<i class="zmdi zmdi-font"></i>
+						<i class="fa fa-user"></i>
 					</span>
+					<div>
+					{!!$errors->first('nombreUsuario','<span class="text-danger">:message</span>')!!}
+					</div>
 
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is: ">
-						<input class="input100" type="text" name="nombreUsuario">
+					<div class="wrap-input100 validate-input  mb-3{{$errors->has('nombreUsuario' ? 'border border-red' : '')}}" data-validate = "Escriba Un Usuario ">
+						<input class="input100" type="text" value="{{old('nombreUsuario')}}" name="nombreUsuario">
 						<span class="focus-input100" data-placeholder="usuario"></span>
+						
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Escriba la Contraseña">

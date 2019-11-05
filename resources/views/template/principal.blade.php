@@ -15,9 +15,22 @@
 	
 </head>
 <body >
-    @include('template.menu.menu')      
+@if(Auth::check())
+            @if (Auth::user()->idrol == 1)
+                 @include('template.menu.menu')      
+                
+            @elseif (Auth::user()->idrol == 3)
+            @include('template.menu.menuRecolector')      
+            @else
+
+
+            @endif
+
+        @endif
 
     <div>
+    
+  
     
      @include('flash::message')
 	<div class="container" style="background:#E9ECEF">
@@ -26,7 +39,7 @@
     <br>
     @yield('seccion')   
     </div>    
-    
+ 
     <!--<footer class="fixed-bottom footer">    
     <p>Sistema Laravel</p></footer>  -->
 

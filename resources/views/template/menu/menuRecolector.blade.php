@@ -1,6 +1,6 @@
 
     @if(Auth::check())
-            @if (Auth::user()->idrol == 1)
+            @if (Auth::user()->idrol == 3)
 <div>
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,25 +10,7 @@
     <a class="navbar-brand" style="color:white; margin-left:8%" href="{{route('inicio')}}">Sistema Saausn</a>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       
-      <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" style="color:white" data-toggle="dropdown" href="#"  aria-haspopup="true" aria-expanded="false">Atención Clientes</a>
-      <div class="dropdown-menu">
-      <a class="dropdown-item" href="{{route('indexCliente')}}"><i class="fa fa-list"></i> Lista de Clientes</a>
-        <a class="dropdown-item" href="{{route('crearcliente')}}"><i class="fa fa-plus"></i> Nuevo Cliente</a>
-        <a class="dropdown-item" href=""><i class="fa fa-plus"></i> Nueva Solicitud Servicio</a>
-        <a class="dropdown-item" href=""><i class="fa fa-list"></i> Estado de Cuentas</a>
-
-      </div>
-    </li>
-        <li class="nav-item">
-        <a class="nav-link" style="color:white" href="#">Categorias</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" style="color:white" href="#">Imágenes</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" style="color:white" href="#">Tags</a>
-      </li>
+      
      <li class="nav-item">
         <a class="nav-link text-left" style="color:white" href="#">Clientes</a>
         <li class="nav-item dropdown">
@@ -36,8 +18,6 @@
       <div class="dropdown-menu">
         <a class="dropdown-item" href="{{route('cargo')}}"><i class="fa fa-list"></i> Cargos</a>
         <a class="dropdown-item" href="{{route('servicio')}}"><i class="fa fa-list"></i> Servicios</a>
-        <a class="dropdown-item" href="{{route('indexComunidad')}}"><i class="fa fa-list"></i> Comunidades</a>
-        <a class="dropdown-item" href="{{route('indexRoles')}}"><i class="fa fa-list"></i> Roles</a>
 
       </div>
     </li>    
@@ -78,4 +58,3 @@
 @endif
 
 @endif
-
